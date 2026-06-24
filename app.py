@@ -17,7 +17,7 @@ if not groq_key:
     groq_key = st.secrets.get("GROQ_API_KEY")
 
 if not groq_key:
-    st.error("GROQ_API_KEY not found in Streamlit Secrets")
+    st.write("Available secrets:", list(st.secrets.keys()))
     st.stop()
 
 llm = ChatGroq(
