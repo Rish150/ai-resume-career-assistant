@@ -4,12 +4,21 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain_groq import ChatGroq
+import os
+import streamlit as st
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
 import re
 load_dotenv()
+
+groq_key = os.getenv("GROQ_API_KEY")
+
+if not groq_key:
+    groq_key = st.secrets["GROQ_API_KEY"]
+
 llm = ChatGroq(
-    model_name="llama-3.1-8b-instant"
+    model_name="llama-3.1-8b-instant",
+    api_key=groq_key
 )
 @st.cache_resource
 def generate_interview_questions(vectorstore):
