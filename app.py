@@ -332,8 +332,8 @@ if uploaded_file:
         st.markdown("### Resume Analysis")
         st.markdown(answer)
 
+   
     if generate_interview:
-
         with st.spinner("Generating Interview Questions..."):
             answer = generate_interview_questions(vectorstore)
 
@@ -341,7 +341,6 @@ if uploaded_file:
         st.markdown(answer)
 
     if analyze_strengths:
-
         with st.spinner("Analyzing Resume..."):
             answer = ask_resume(
                 """
@@ -359,6 +358,3 @@ if uploaded_file:
         st.markdown("### Resume Analysis")
         st.markdown(answer)
 
-
-            st.success(answer)
-            
