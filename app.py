@@ -257,14 +257,14 @@ if uploaded_file:
                 cover_letter,
                 height=400
             )
+    
     if st.button("Analyze Resume Match"):
 
-        if job_description:
+        if not job_description:
+            st.warning("Please paste a job description first.")
 
-            with st.spinner(
-                "Analyzing Resume Match..."
-            ):
-
+        else:
+            with st.spinner("Analyzing Resume Match..."):
                 result = match_resume_to_job(
                     vectorstore,
                     job_description
@@ -272,55 +272,38 @@ if uploaded_file:
 
             st.markdown("## ATS Analysis")
 
-        match = re.search(
-            r"MATCH_SCORE:\s*(\d+)",
-            result
-        )
-
-        if match:
-
-            score = int(
-                match.group(1)
+            match = re.search(
+                r"MATCH_SCORE:\s*(\d+)",
+                result
             )
 
-            st.metric(
-                label="ATS Match Score",
-                value=f"{score}%"
-            )
+            if match:
+                score = int(match.group(1))
+                score = max(0, min(score, 100))
 
-            st.progress(score)
-
-            if score >= 80:
-
-                st.success(
-                    f"Excellent Match ({score}%)"
+                st.metric(
+                    label="ATS Match Score",
+                    value=f"{score}%"
                 )
 
-            elif score >= 60:
+                st.progress(score)
 
-                st.warning(
-                    f"Good Match ({score}%)"
-                )
+                if score >= 80:
+                    st.success(f"Excellent Match ({score}%)")
+                elif score >= 60:
+                    st.warning(f"Good Match ({score}%)")
+                else:
+                    st.error(f"Low Match ({score}%)")
 
             else:
-
-                st.error(
-                    f"Low Match ({score}%)"
+                st.warning(
+                    "Could not extract the match score. "
+                    "Please check the detailed analysis below."
                 )
 
-        with st.expander(
-            "View Detailed Analysis"
-        ):
+            with st.expander("View Detailed Analysis"):
+                st.write(result)
 
-            st.write(result)
-            if st.button("Ask"):
-                with st.spinner("Analysing Resume....."):
-                    answer = ask_resume(
-                    question,
-                    vectorstore
-                )
-                st.markdown("### AI Response")
-                st.success(answer)
         if generate_interview:
 
             with st.spinner(
