@@ -21,8 +21,9 @@ if not groq_key:
     st.stop()
 
 llm = ChatGroq(
-    model_name="llama-3.1-8b-instant",
-    api_key=groq_key
+    model="openai/gpt-oss-120b",
+    api_key=groq_key,
+    temperature=0
 )
 @st.cache_resource
 def generate_interview_questions(vectorstore):
