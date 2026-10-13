@@ -304,43 +304,61 @@ if uploaded_file:
             with st.expander("View Detailed Analysis"):
                 st.write(result)
 
-        if generate_interview:
+        
+    if generate_interview:
 
-            with st.spinner(
-                "Generating Interview Questions..."
-            ):
+        with st.spinner("Generating Interview Questions..."):
+            answer = generate_interview_questions(vectorstore)
 
-                answer = generate_interview_questions(
-                    vectorstore
-                )
+        st.markdown("### Interview Questions")
+        st.markdown(answer)
 
-            st.markdown(
-                "### Interview Questions"
+    if analyze_strengths:
+
+        with st.spinner("Analyzing Resume..."):
+            answer = ask_resume(
+                """
+                Analyze the strengths and weaknesses of this resume.
+
+                Provide:
+                1. Key Strengths
+                2. Areas for Improvement
+                3. Missing Skills
+                4. Resume Suggestions
+                """,
+                vectorstore
             )
 
-            st.success(answer)
-        if analyze_strengths:
+        st.markdown("### Resume Analysis")
+        st.markdown(answer)
 
-            with st.spinner(
-                "Analyzing Resume..."
-            ):
+    if generate_interview:
 
-                answer = ask_resume(
-                    """
-                    Analyze the strengths and weaknesses of this resume.
+        with st.spinner("Generating Interview Questions..."):
+            answer = generate_interview_questions(vectorstore)
 
-                    Provide:
-                    1. Key Strengths
-                    2. Areas for Improvement
-                    3. Missing Skills
-                    4. Resume Suggestions
-                    """,
-                    vectorstore
-                )
+        st.markdown("### Interview Questions")
+        st.markdown(answer)
 
-            st.markdown(
-                "### Resume Analysis"
+    if analyze_strengths:
+
+        with st.spinner("Analyzing Resume..."):
+            answer = ask_resume(
+                """
+                Analyze the strengths and weaknesses of this resume.
+
+                Provide:
+                1. Key Strengths
+                2. Areas for Improvement
+                3. Missing Skills
+                4. Resume Suggestions
+                """,
+                vectorstore
             )
+
+        st.markdown("### Resume Analysis")
+        st.markdown(answer)
+
 
             st.success(answer)
             
